@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 
 
 class HotelUnta
@@ -15,8 +16,11 @@ class HotelUnta
     //para ni ma check kung ok pa ba mag add ug reservation, di pareha nimo na wa gi check kung ok pa
     static int reservationCount = 0;
 
+    static string customerName, mobileNumber, roomType;
     static void Main(string[] args)
     {
+       
+
         while (true)
         {
             Console.WriteLine("\nWelcome to the Hotel Reservation System");
@@ -67,13 +71,13 @@ class HotelUnta
         Console.WriteLine("\nCreating a new reservation...");
 
         Console.Write("Enter Customer Name: ");
-        string customerName = Console.ReadLine();
+        customerName = Console.ReadLine();
 
         Console.Write("Enter Mobile Number: ");
-        string mobileNumber = Console.ReadLine();
+        mobileNumber = Console.ReadLine();
 
         Console.Write("Enter Room Type: ");
-        string roomType = Console.ReadLine();
+        roomType = Console.ReadLine();
 
         Room room = null;
         foreach (var availableRoom in availableRooms)
@@ -115,7 +119,7 @@ class HotelUnta
         }
         else
         {
-            Console.WriteLine($"Sorry, there are no available rooms for the room type " + roomType +". Reservation cannot be made.");
+            Console.WriteLine("Sorry, there are no available rooms for the room type " + roomType +". Reservation cannot be made.");
         }
     }
 
@@ -139,12 +143,82 @@ class HotelUnta
 
     static void CancelReservation()
     {
-        //wa pani gi implement kay katugon nako
+        Console.WriteLine("\nCanceling Reservation...");
+        Console.Write("Enter Customer Name to cancel reservation: ");
+        string cancelCustomerName = Console.ReadLine();
+        //para pa check kung naa paka sa iya heart
+        bool reservationFound = false;
+
+        for (int i = 0; i < reservationCount; i++)
+        {
+            if (reservations[i] != null && reservations[i].CustomerName.Equals(cancelCustomerName, StringComparison.OrdinalIgnoreCase))
+            {
+                foreach (var availableRoom in availableRooms)
+                {
+                    if (availableRoom.Type == reservations[i].RoomType)
+                    {
+                        availableRoom.Availability++;
+                        break;
+                    }
+                }
+
+                reservations[i] = null;
+
+                Console.WriteLine("Reservation canceled successfully for customer: " + cancelCustomerName);
+                reservationFound = true;
+                break;
+            }
+        }
+        if (!reservationFound)
+        {
+            Console.WriteLine("No reservation found for customer: " + cancelCustomerName);
+        }
     }
 
-    static void ModifyReservation()
+
+    static void ModifyReservation() //basura
     {
-        //kani pud
+        Console.WriteLine("What do you wish to modify from your reservation?");
+        Console.WriteLine("1 : Customer Name");
+        Console.WriteLine("2 : Mobile Number");
+        Console.WriteLine("3 : Room Type");
+        Console.WriteLine("4 : Check in Time");
+        Console.WriteLine("5 : Check out Time");
+        int choice;
+        if (!int.TryParse(Console.ReadLine(), out choice))
+        {
+            Console.Write("Invalid input. Please enter a number.");
+        }
+
+        if (choice == 1)
+        {
+            Console.Write("Enter Customer Name: ");
+            customerName = Console.ReadLine();
+        }
+        else if(choice == 2)
+        {
+            Console.Write("Enter Mobile Number: ");
+            mobileNumber = Console.ReadLine();
+        }
+        else if(choice == 3)
+        {
+            Console.Write("Enter Room Type");
+            roomType = Console.ReadLine();
+            Room room = null;
+            foreach (var availableRoom in availableRooms)
+            {
+                if (availableRoom.Type == roomType && availableRoom.Availability > 0)
+                {
+                    room = availableRoom;
+                    break;
+                }
+            }
+        }
+        else if(choice == 4)
+        {
+            Console.Write("Enter Check-in Date (MM/dd/yyyy): ");
+
+        }
     }
 }
 
