@@ -115,7 +115,7 @@ class HotelUnta
         }
         else
         {
-            Console.WriteLine($"Sorry, there are no available rooms for the room type '{roomType}'. Reservation cannot be made.");
+            Console.WriteLine($"Sorry, there are no available rooms for the room type " + roomType +". Reservation cannot be made.");
         }
     }
 
@@ -134,7 +134,7 @@ class HotelUnta
         Console.WriteLine("\nDouble Standard - 1200 PHP");
         Console.WriteLine("Double Deluxe - 1500 PHP");
         Console.WriteLine("Twin Bed - 1800 PHP");
-        Console.WriteLine("Superior Deluxe - 2500");
+        Console.WriteLine("Superior Deluxe - 2500 PHP");
     }
 
     static void CancelReservation()
