@@ -19,7 +19,8 @@ class HotelUnta
     static string customerName, mobileNumber, roomType;
     static void Main(string[] args)
     {
-       
+        display("Di ka niya Lab........");
+        
 
         while (true)
         {
@@ -42,7 +43,21 @@ class HotelUnta
             switch (choice)
             {
                 case 0:
-                    Console.WriteLine("Exiting program. Goodbye!");
+                    Console.SetCursorPosition(0, 0);
+                    Console.Clear();
+                    string letters = "Logging Off.....";
+                    for (int i = 0; i < letters.Length; i++)
+                    {
+                        for (int j = 1; j < 3; j++)
+                        {
+                            Console.SetCursorPosition(5 + i, j);
+                            Console.Write(letters[i]);
+                            Console.SetCursorPosition(5 + i, j - 1);
+                            Console.Write(' ');
+                            Thread.Sleep(200);
+
+                        }
+                    }
                     return;
                 case 1:
                     CreateReservation();
@@ -220,6 +235,24 @@ class HotelUnta
 
         }
     }
+    static void display(string text) //Style Naay logging in animation ang program :3
+    {
+        Console.SetCursorPosition(0, 0);
+        var letters = text;
+        for (int i = 0; i < letters.Length; i++)
+        {
+            for (int j = 1; j < 2; j++)
+            {
+                Console.SetCursorPosition(5 + i, j);
+                Console.Write(letters[i]);
+                Console.SetCursorPosition(5 + i, j - 1);
+                Console.Write(' ');
+                Thread.Sleep(100);
+
+            }
+        }
+    }
+
 }
 
 // tanan naa diri para na sa OOP approach

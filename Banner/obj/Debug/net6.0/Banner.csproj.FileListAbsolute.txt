@@ -1,0 +1,14 @@
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\bin\Debug\net6.0\Banner.exe
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\bin\Debug\net6.0\Banner.deps.json
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\bin\Debug\net6.0\Banner.runtimeconfig.json
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\bin\Debug\net6.0\Banner.dll
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\bin\Debug\net6.0\Banner.pdb
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.AssemblyInfoInputs.cache
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.AssemblyInfo.cs
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.csproj.CoreCompileInputs.cache
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.dll
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\refint\Banner.dll
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.pdb
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\Banner.genruntimeconfig.cache
+C:\Users\Craig Nathan\Documents\GitHub\Hotel-Reservation\Banner\obj\Debug\net6.0\ref\Banner.dll
