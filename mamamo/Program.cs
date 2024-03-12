@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
-
+using System.Threading;
 
 class HotelUnta
 {
@@ -12,15 +12,15 @@ class HotelUnta
         new Room("Superior Deluxe", 3)
     };
 
-    static Reservation[] reservations = new Reservation[100];
+    static Reservation[] reservations = new Reservation[100]; // limit max - 100
     //para ni ma check kung ok pa ba mag add ug reservation, di pareha nimo na wa gi check kung ok pa
     static int reservationCount = 0;
 
-    static string customerName, mobileNumber, roomType;
+    static string customerName, mobileNumber, roomType; // mobile number into data type int > make a try parse for its input
+
     static void Main(string[] args)
     {
-        display("Di ka niya Lab........");
-        
+        display("Log in........");
 
         while (true)
         {
@@ -29,7 +29,7 @@ class HotelUnta
             Console.WriteLine("2. Search for Availability");
             Console.WriteLine("3. Display Room Details");
             Console.WriteLine("5. Cancel Reservation");
-            Console.WriteLine("6. Modify Reservation");
+            Console.WriteLine("6. Check Price Calculation");
             Console.WriteLine("0. Exit");
             Console.WriteLine("Please enter your choice:");
 
@@ -43,21 +43,7 @@ class HotelUnta
             switch (choice)
             {
                 case 0:
-                    Console.SetCursorPosition(0, 0);
-                    Console.Clear();
-                    string letters = "Logging Off.....";
-                    for (int i = 0; i < letters.Length; i++)
-                    {
-                        for (int j = 1; j < 3; j++)
-                        {
-                            Console.SetCursorPosition(5 + i, j);
-                            Console.Write(letters[i]);
-                            Console.SetCursorPosition(5 + i, j - 1);
-                            Console.Write(' ');
-                            Thread.Sleep(200);
-
-                        }
-                    }
+                    logOff();
                     return;
                 case 1:
                     CreateReservation();
@@ -72,7 +58,7 @@ class HotelUnta
                     CancelReservation();
                     break;
                 case 6:
-                    ModifyReservation();
+                    CalculateReservationPrice();
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please enter a valid option.");
@@ -86,18 +72,37 @@ class HotelUnta
         Console.WriteLine("\nCreating a new reservation...");
 
         Console.Write("Enter Customer Name: ");
-        customerName = Console.ReadLine();
+        string customerName = Console.ReadLine();
 
         Console.Write("Enter Mobile Number: ");
-        mobileNumber = Console.ReadLine();
+        string mobileNumber = Console.ReadLine();
 
-        Console.Write("Enter Room Type: ");
-        roomType = Console.ReadLine();
+        string roomTypeInput;
+        bool validRoomType = false;
+        do
+        {
+            Console.Write("Enter Room Type (Twin Bed, Superior Deluxe, Double Standard, Double Deluxe): ");
+            roomTypeInput = Console.ReadLine().Trim(); // Trim to remove leading/trailing whitespaces
+
+            // Check if the input matches any of the available room types
+            if (roomTypeInput.Equals("Twin Bed", StringComparison.OrdinalIgnoreCase) ||
+                roomTypeInput.Equals("Double Standard", StringComparison.OrdinalIgnoreCase) ||
+                roomTypeInput.Equals("Superior Deluxe", StringComparison.OrdinalIgnoreCase) ||
+                roomTypeInput.Equals("Double Deluxe", StringComparison.OrdinalIgnoreCase))
+            {
+                validRoomType = true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid room type, please provide a valid type.");
+            }
+        } while (!validRoomType);
 
         Room room = null;
         foreach (var availableRoom in availableRooms)
         {
-            if (availableRoom.Type == roomType && availableRoom.Availability > 0)
+            // Compare room types ignoring case and check availability
+            if (availableRoom.Type.Equals(roomTypeInput, StringComparison.OrdinalIgnoreCase) && availableRoom.Availability > 0)
             {
                 room = availableRoom;
                 break;
@@ -108,7 +113,6 @@ class HotelUnta
         {
             Console.Write("Enter Check-in Date (MM/dd/yyyy): ");
             DateTime checkIn;
-            //System.Globalization.DateTimeStyles.None same ni sa kadtong birthyear na activity ni sir
             while (!DateTime.TryParseExact(Console.ReadLine(), "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out checkIn))
             {
                 Console.WriteLine("Invalid date format. Please enter the date in MM/dd/yyyy format.");
@@ -117,24 +121,26 @@ class HotelUnta
 
             Console.Write("Enter Check-out Date (MM/dd/yyyy): ");
             DateTime checkOut;
-            //kani sad
             while (!DateTime.TryParseExact(Console.ReadLine(), "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out checkOut) || checkOut <= checkIn)
             {
                 Console.WriteLine("Invalid date or check-out date must be after check-in date. Please enter a valid check-out date.");
                 Console.Write("Enter Check-out Date (MM/dd/yyyy): ");
             }
 
-            Reservation newReservation = new Reservation(customerName, mobileNumber, roomType, checkIn, checkOut);
+            Reservation newReservation = new Reservation(customerName, mobileNumber, roomTypeInput, checkIn, checkOut);
 
             reservations[reservationCount++] = newReservation;
 
             room.Availability--;
-
+            
             Console.WriteLine("Reservation created successfully!");
+            Thread.Sleep(3000); //para naay time mabasa ang console message before ma clear
+            Console.Clear();
         }
         else
         {
-            Console.WriteLine("Sorry, there are no available rooms for the room type " + roomType +". Reservation cannot be made.");
+            // Display message if room type is not available
+            Console.WriteLine("Sorry, there are no available rooms for the room type " + roomTypeInput + ". Reservation cannot be made.");
         }
     }
 
@@ -190,51 +196,88 @@ class HotelUnta
         }
     }
 
-
-    static void ModifyReservation() //basura
+    static void logOff()
     {
-        Console.WriteLine("What do you wish to modify from your reservation?");
-        Console.WriteLine("1 : Customer Name");
-        Console.WriteLine("2 : Mobile Number");
-        Console.WriteLine("3 : Room Type");
-        Console.WriteLine("4 : Check in Time");
-        Console.WriteLine("5 : Check out Time");
-        int choice;
-        if (!int.TryParse(Console.ReadLine(), out choice))
+        Console.SetCursorPosition(0, 0);
+        Console.Clear();
+        string letters = "Logging Off.....";
+        for (int i = 0; i < letters.Length; i++)
         {
-            Console.Write("Invalid input. Please enter a number.");
+            for (int j = 1; j < 3; j++)
+            {
+                Console.SetCursorPosition(5 + i, j);
+                Console.Write(letters[i]);
+                Console.SetCursorPosition(5 + i, j - 1);
+                Console.Write(' ');
+                System.Threading.Thread.Sleep(200);
+
+            }
+        }
+        Environment.Exit(0);
+    }
+
+    static void CalculateReservationPrice()
+    {
+        Console.WriteLine("\nCalculating Reservation Price...");
+
+        Console.Write("Enter Customer Name to calculate reservation price: ");
+        string customerName = Console.ReadLine();
+
+        // Find the reservation based on customer name
+        Reservation reservation = null;
+        foreach (var res in reservations)
+        {
+            if (res != null && res.CustomerName.Equals(customerName, StringComparison.OrdinalIgnoreCase))
+            {
+                reservation = res;
+                break;
+            }
         }
 
-        if (choice == 1)
+        if (reservation != null)
         {
-            Console.Write("Enter Customer Name: ");
-            customerName = Console.ReadLine();
-        }
-        else if(choice == 2)
-        {
-            Console.Write("Enter Mobile Number: ");
-            mobileNumber = Console.ReadLine();
-        }
-        else if(choice == 3)
-        {
-            Console.Write("Enter Room Type");
-            roomType = Console.ReadLine();
+            // Find the corresponding room type
             Room room = null;
             foreach (var availableRoom in availableRooms)
             {
-                if (availableRoom.Type == roomType && availableRoom.Availability > 0)
+                if (availableRoom.Type.Equals(reservation.RoomType, StringComparison.OrdinalIgnoreCase))
                 {
                     room = availableRoom;
                     break;
                 }
             }
-        }
-        else if(choice == 4)
-        {
-            Console.Write("Enter Check-in Date (MM/dd/yyyy): ");
 
+            // Calculate duration and price
+            TimeSpan duration = reservation.CheckOut - reservation.CheckIn;
+            double price = duration.TotalDays * GetPriceByRoomType(reservation.RoomType);
+
+            Console.WriteLine($"Total price for the reservation of {reservation.RoomType} for {duration.TotalDays} days is: {price} PHP");
+        }
+        else
+        {
+            Console.WriteLine("No reservation found for customer: " + customerName);
         }
     }
+
+    static double GetPriceByRoomType(string roomType)
+    {
+        switch (roomType.ToLower())
+        {
+            case "double standard":
+                return 1200;
+            case "double deluxe":
+                return 1500;
+            case "twin bed":
+                return 1750;
+            case "superior deluxe":
+                return 2500;
+            default:
+                return 0;
+        }
+    }
+
+
+
     static void display(string text) //Style Naay logging in animation ang program :3
     {
         Console.SetCursorPosition(0, 0);
@@ -248,11 +291,9 @@ class HotelUnta
                 Console.SetCursorPosition(5 + i, j - 1);
                 Console.Write(' ');
                 Thread.Sleep(100);
-
             }
         }
     }
-
 }
 
 // tanan naa diri para na sa OOP approach
@@ -285,3 +326,5 @@ class Reservation
         CheckOut = checkOut;
     }
 }
+
+
