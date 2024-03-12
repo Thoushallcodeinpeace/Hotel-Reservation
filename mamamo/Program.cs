@@ -29,7 +29,8 @@ class HotelUnta
             Console.WriteLine("2. Search for Availability");
             Console.WriteLine("3. Display Room Details");
             Console.WriteLine("5. Cancel Reservation");
-            Console.WriteLine("6. Check Price Calculation");
+            Console.WriteLine("6. Check Price");
+            Console.WriteLine("7. Check Reservation");
             Console.WriteLine("0. Exit");
             Console.WriteLine("Please enter your choice:");
 
@@ -59,6 +60,9 @@ class HotelUnta
                     break;
                 case 6:
                     CalculateReservationPrice();
+                    break;
+                case 7:
+                    FindReservationByMobileNumber();
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please enter a valid option.");
@@ -223,7 +227,6 @@ class HotelUnta
         Console.Write("Enter Customer Name to calculate reservation price: ");
         string customerName = Console.ReadLine();
 
-        // Find the reservation based on customer name
         Reservation reservation = null;
         foreach (var res in reservations)
         {
@@ -236,7 +239,6 @@ class HotelUnta
 
         if (reservation != null)
         {
-            // Find the corresponding room type
             Room room = null;
             foreach (var availableRoom in availableRooms)
             {
@@ -251,13 +253,14 @@ class HotelUnta
             TimeSpan duration = reservation.CheckOut - reservation.CheckIn;
             double price = duration.TotalDays * GetPriceByRoomType(reservation.RoomType);
 
-            Console.WriteLine($"Total price for the reservation of {reservation.RoomType} for {duration.TotalDays} days is: {price} PHP");
+            Console.WriteLine("Total price for the reservation of " + reservation.RoomType + " for " + duration.TotalDays + " days is: " + price + " PHP");
         }
         else
         {
             Console.WriteLine("No reservation found for customer: " + customerName);
         }
     }
+
 
     static double GetPriceByRoomType(string roomType)
     {
@@ -268,13 +271,43 @@ class HotelUnta
             case "double deluxe":
                 return 1500;
             case "twin bed":
-                return 1750;
+                return 1800;
             case "superior deluxe":
                 return 2500;
             default:
                 return 0;
         }
     }
+
+    static void FindReservationByMobileNumber()
+    {
+        Console.WriteLine("\nFinding Reservation by Mobile Number...");
+
+        Console.Write("Enter Mobile Number to find reservation: ");
+        string mobileNumber = Console.ReadLine();
+
+        // Find the reservation based on mobile number
+        bool reservationFound = false;
+        foreach (var res in reservations)
+        {
+            if (res != null && res.MobileNumber.Equals(mobileNumber, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine($"Reservation found for mobile number: {mobileNumber}");
+                Console.WriteLine($"Customer Name: {res.CustomerName}");
+                Console.WriteLine($"Room Type: {res.RoomType}");
+                Console.WriteLine($"Check-in Date: {res.CheckIn.ToString("MM/dd/yyyy")}");
+                Console.WriteLine($"Check-out Date: {res.CheckOut.ToString("MM/dd/yyyy")}");
+                reservationFound = true;
+                break;
+            }
+        }
+
+        if (!reservationFound)
+        {
+            Console.WriteLine("No reservation found for the provided mobile number.");
+        }
+    }
+
 
 
 
